@@ -99,3 +99,23 @@ module.exports.view = async function (req, res) {
     res.status(500).send("Internal server error");
   }
 };
+
+//delete fuction
+module.exports.deleteFile = async function (req, res) {
+  try {
+    const csvFile = await CSV.findById(req.params.id);
+    if (!csvFile) {
+      return res.status(404).send("File not found");
+    }
+    csvFile.deleteOne().then(() => {
+      console.log("Successfully Deleted");
+    }).catch(()=>{
+      return res.status(404).send("File not found");
+    })
+
+    return res.redirect("/csv/all");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
+  }
+};
